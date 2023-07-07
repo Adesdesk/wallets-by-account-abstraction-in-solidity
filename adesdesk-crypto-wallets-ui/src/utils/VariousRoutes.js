@@ -3,6 +3,8 @@ import { Route, Routes } from 'react-router-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import WalletConnection from '../AppPages/WalletConnection';
 import WalletUserDasboard from '../AppPages/WalletUserDasboard';
+import SendFunds from '../AppPages/SendFunds';
+
 
 const VariousRoutes = () => {
   const [wallet, setWallet] = useState(null);
@@ -28,6 +30,11 @@ const VariousRoutes = () => {
           exact
           path="/wallet-user-dashboard"
           element={<WalletUserDasboard wallet={wallet} onContractDeploy={handleCreatewallet} />}
+        />
+        <Route
+          exact
+          path="/send-funds"
+          element={<SendFunds wallet={wallet} onContractDeploy={handleCreatewallet} />}
         />
       </Routes>
     </Router>

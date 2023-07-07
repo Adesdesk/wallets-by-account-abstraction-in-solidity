@@ -24,9 +24,9 @@ const WalletConnection = ({ onConnect }) => {
         navigate('/wallet-user-dashboard');
     };
 
-    // const handleNavigateToInsureCollateral = () => {
-    //     navigate('/insure-loan-collateral');
-    // };
+    const handleNavigateToSendFunds = () => {
+        navigate('/send-funds');
+    };
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-violet-500 to-fuchsia-500">
@@ -47,18 +47,19 @@ const WalletConnection = ({ onConnect }) => {
                     <div className='flex flex-col items-center justify-center'>
         
                         <button
-                            className="bg-violet-700 border-white text-white font-bold py-2 px-4 border-2 rounded"
+                            className="bg-gradient-to-r from-violet-500 to-fuchsia-500 border-white text-white font-bold py-2 px-4 border-2 rounded"
                             onClick={handleNavigateToWalletDashboard}
                         >
-                            Connected! Click here to create or do more with your cryptocurrency wallet
+                            Connected! Click here to create or view your cryptocurrency wallet details
                         </button>
+                        <br></br>
 
-                        {/* <button
-                            className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mt-2 mb-20"
-                            onClick={handleNavigateToInsureCollateral}
+                        <button
+                            className="bg-gradient-to-r from-violet-500 to-fuchsia-500 border-white text-white font-bold py-2 px-4 border-2 rounded"
+                            onClick={handleNavigateToSendFunds}
                         >
-                            Subscribe to a collateral protection insurance plan for a crypto-backed loan
-                        </button> */}
+                            Instant Fund Transfers Here
+                        </button>
 
                     </div>
                 )}

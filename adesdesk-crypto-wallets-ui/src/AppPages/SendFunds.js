@@ -4,13 +4,13 @@ import WalletContractDeployer from '../contracts/WalletContractDeployer.json';
 import WalletContract from '../contracts/WalletContract.json';
 import NavigationBar from '../components/NavigationBar/NavigationBar.js';
 
-const WalletUserDashboard = ({ wallet }) => {
+const SendFunds = ({ wallet }) => {
   const walletContractDeployerAddress = '0x80764eC89F806C4DD8Fbf2fF58ba571ef761814D';
-  const tokenAddresses = ['0xd9145CCE52D386f254917e481eB44e9943F39138', '0xd22c0ba4EA50F0D0e3Fa5578bb8a48E48EAb0BDb']; // the addresses of the tokens to track
 
-  const [balance, setBalance] = useState('0');
+  const [toAddress, setToAddress] = useState('');
+  const [amount, setAmount] = useState('');
+  const [balance, setBalance] = useState(0);
   const [walletAddress, setWalletAddress] = useState('');
-  const [tokenBalances, setTokenBalances] = useState([]);
 
   useEffect(() => {
     loadWallet();
@@ -41,26 +41,16 @@ const WalletUserDashboard = ({ wallet }) => {
           signer
         );
 
-        // Get the wallet ETH balance
+        // Getting the wallet balance
         const walletBalance = await walletContract.getBalance();
         setBalance(walletBalance.toString());
-
-       //  Get balances of other tokens
-        const tokenBalances = await Promise.all(
-          tokenAddresses.map(async (tokenAddress) => {
-            const tokenContract = new ethers.Contract(tokenAddress, WalletContract.abi, signer);
-            const tokenBalance = await tokenContract.getBalance();
-            return { tokenAddress, tokenBalance: tokenBalance.toString() };
-          })
-        );
-        setTokenBalances(tokenBalances);
       }
     } catch (error) {
       console.error(error);
     }
   }
 
-  async function createWallet() {
+  async function sendFunds() {
     try {
       const provider = new ethers.providers.Web3Provider(wallet);
       const signer = provider.getSigner();
@@ -72,11 +62,27 @@ const WalletUserDashboard = ({ wallet }) => {
         signer
       );
 
-      // Calling the createWallet function in the WalletContractDeployer
-      await walletContractDeployer.createWallet();
+      // Retrieving the user's wallet address using the getWalletAddress function in WalletContractDeployer.sol
+      const userWalletAddress = await walletContractDeployer.getWalletAddress(signer.getAddress());
 
-      // Reload wallet data
-      await loadWallet();
+      if (userWalletAddress !== ethers.constants.AddressZero) {
+        // Creating a new instance of the WalletContract
+        const walletContract = new ethers.Contract(
+          userWalletAddress,
+          WalletContract.abi,
+          signer
+        );
+
+        // To send funds
+        await walletContract.transfer(toAddress, ethers.constants.AddressZero, amount);
+
+        // Reload the wallet data
+        await loadWallet();
+
+        // Clear input fields
+        setToAddress('');
+        setAmount('');
+      }
     } catch (error) {
       console.error(error);
     }
@@ -91,38 +97,45 @@ const WalletUserDashboard = ({ wallet }) => {
         </h2>
 
         <div className="max-w-lg px-4 py-2 rounded-lg shadow-lg border-white border-2">
-          {walletAddress !== '' ? (
-            <div>
-              <h3 className="text-white text-lg font-bold mb-2">Wallet Address:</h3>
-              <p className="text-white">{walletAddress}</p>
-              <h3 className="text-white text-lg font-bold mb-2">Balance:</h3>
-              <p className="text-white">{balance} ETH</p>
-              {tokenBalances.length > 0 && (
-                <div>
-                  <h3 className="text-white text-lg font-bold mb-2">Token Balances:</h3>
-                  {tokenBalances.map((token) => (
-                    <div key={token.tokenAddress}>
-                      <p className="text-white">{token.tokenAddress} Balance: {token.tokenBalance}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ) : (
-            <div>
-              <p className="text-white mb-2">You don't have a wallet yet.</p>
-              <button
-                className="bg-violet-700 border-white text-white font-bold py-2 px-4 border-2 rounded"
-                onClick={createWallet}
-              >
-                Create Wallet
-              </button>
-            </div>
-          )}
+          <h3 className="text-white text-lg font-bold mb-2">Wallet Address:</h3>
+          <p className="text-white">{walletAddress}</p>
+          <h3 className="text-white text-lg font-bold mb-2">Balance:</h3>
+          <p className="text-white">{balance} ETH</p>
+
+          <div className="mt-4">
+            <h3 className="text-white text-lg font-bold mb-2">Send Funds</h3>
+            <label htmlFor="toAddress" className="text-white mb-2 block">
+              To Address:
+            </label>
+            <input
+              type="text"
+              id="toAddress"
+              className="border border-white rounded-lg px-3 py-2 mb-2"
+              value={toAddress}
+              onChange={(e) => setToAddress(e.target.value)}
+            />
+            <label htmlFor="amount" className="text-white mb-2 block">
+              Amount:
+            </label>
+            <input
+              type="text"
+              id="amount"
+              className="border border-white rounded-lg px-3 py-2 mb-2"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
+            <br></br>
+            <button
+              className="bg-gradient-to-r from-violet-500 to-fuchsia-500 border-white text-white font-bold py-2 px-4 border-2 rounded"
+              onClick={sendFunds}
+            >
+              Send Funds
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default WalletUserDashboard;
+export default SendFunds;

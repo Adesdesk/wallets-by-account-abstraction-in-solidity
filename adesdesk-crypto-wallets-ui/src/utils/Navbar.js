@@ -18,6 +18,9 @@ const Navbar = () => {
                 <NavItem>
                     <NavLink to="/wallet-user-dashboard">Visit Dashboard</NavLink>
                 </NavItem>
+                <NavItem>
+                    <NavLink to="/send-funds">Instant Transfers</NavLink>
+                </NavItem>
             </Nav>
         </Container>
     );

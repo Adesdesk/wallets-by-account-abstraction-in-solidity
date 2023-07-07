@@ -11,6 +11,7 @@ contract WalletContractDeployer {
 
     mapping(address => Wallet) private wallets;
     mapping(address => address) private ownerToWallet;
+    
     // Mapping to store balances of different tokens for each wallet
     mapping(address => mapping(address => uint256)) public tokenBalances;
 

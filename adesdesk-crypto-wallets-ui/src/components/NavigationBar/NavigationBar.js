@@ -49,8 +49,11 @@ const NavigationBar = () => {
         <li className={`${location.pathname === '/' ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500' : ''} rounded`}>
           <Link to="/">Home</Link>
         </li>
-        <li className={`${location.pathname === '//wallet-user-dashboard' ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500' : ''} rounded`}>
-          <Link to="/">Visit Dashboard</Link>
+        <li className={`${location.pathname === '/wallet-user-dashboard' ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500' : ''} rounded`}>
+          <Link to="/wallet-user-dashboard">Visit Dashboard</Link>
+        </li>
+        <li className={`${location.pathname === '/send-funds' ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500' : ''} rounded`}>
+          <Link to="/send-funds">Instant Transfers</Link>
         </li>
       </ul>
     </nav>
