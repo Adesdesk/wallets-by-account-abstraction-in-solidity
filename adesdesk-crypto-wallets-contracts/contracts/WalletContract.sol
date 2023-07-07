@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.18;
+pragma solidity 0.8.19;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
@@ -35,5 +35,5 @@ contract WalletContract {
             require(tokenContract.transfer(address(to), amount), "Token transfer failed"); // Transfer tokens to the specified wallet
         }
     }
-
 }
+

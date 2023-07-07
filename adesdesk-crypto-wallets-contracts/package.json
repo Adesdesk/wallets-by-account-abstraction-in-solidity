@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "name": "recylox-backend",
   "version": "1.0.0",
   "description": "recylox-smartcontracts",
@@ -31,6 +30,6 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.9.0"
+    "@openzeppelin/contracts": "^4.9.2"
   }
 }
