@@ -3,13 +3,16 @@ import { ethers } from 'ethers';
 import WalletContractDeployer from '../contracts/WalletContractDeployer.json';
 import WalletContract from '../contracts/WalletContract.json';
 import NavigationBar from '../components/NavigationBar/NavigationBar.js';
+import PolygonMumbaiContract from '../contracts/PolygonMumbaiContract.json';
 
 const SendFunds = ({ wallet }) => {
   const walletContractDeployerAddress = '0x80764eC89F806C4DD8Fbf2fF58ba571ef761814D';
+  const maticTokenAddress = '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889'; // the actual address of Polygon Mumbai Matic token
 
   const [toAddress, setToAddress] = useState('');
   const [amount, setAmount] = useState('');
   const [balance, setBalance] = useState(0);
+  const [maticBalance, setMaticBalance] = useState(0);
   const [walletAddress, setWalletAddress] = useState('');
 
   useEffect(() => {
@@ -41,9 +44,16 @@ const SendFunds = ({ wallet }) => {
           signer
         );
 
-        // Getting the wallet balance
-        const walletBalance = await walletContract.getBalance();
-        setBalance(walletBalance.toString());
+        // Getting the wallet ETH balance
+        const ethBalance = await walletContract.getBalance();
+        setBalance(ethBalance.toString());
+
+        // Creating a new instance of the Matic token contract
+        const maticTokenContract = new ethers.Contract(maticTokenAddress, PolygonMumbaiContract.abi, signer);
+
+        // Getting the wallet Matic balance
+        const maticBalance = await maticTokenContract.balanceOf(userWalletAddress);
+        setMaticBalance(maticBalance.toString());
       }
     } catch (error) {
       console.error(error);
@@ -99,8 +109,10 @@ const SendFunds = ({ wallet }) => {
         <div className="max-w-lg px-4 py-2 rounded-lg shadow-lg border-white border-2">
           <h3 className="text-white text-lg font-bold mb-2">Wallet Address:</h3>
           <p className="text-white">{walletAddress}</p>
-          <h3 className="text-white text-lg font-bold mb-2">Balance:</h3>
+          <h3 className="text-white text-lg font-bold mb-2">ETH Balance:</h3>
           <p className="text-white">{balance} ETH</p>
+          <h3 className="text-white text-lg font-bold mb-2">Matic Balance:</h3>
+          <p className="text-white">{maticBalance} Matic</p>
 
           <div className="mt-4">
             <h3 className="text-white text-lg font-bold mb-2">Send Funds</h3>
