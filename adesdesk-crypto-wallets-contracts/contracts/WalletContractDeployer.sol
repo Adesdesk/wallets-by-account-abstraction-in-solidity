@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity 0.8.18;
 
 import './WalletContract.sol';
 
 contract WalletContractDeployer {
     struct Wallet {
         address owner;
-        mapping(address => uint256) balances;
     }
 
     mapping(address => Wallet) private wallets;
@@ -40,3 +39,5 @@ contract WalletContractDeployer {
         emit Transfer(from, to, amount); // Emit an event to indicate the transfer
     }
 }
+
+    

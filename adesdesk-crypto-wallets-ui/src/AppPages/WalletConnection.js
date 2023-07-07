@@ -32,7 +32,7 @@ const WalletConnection = ({ onConnect }) => {
         <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-violet-500 to-fuchsia-500">
             {walletConnected && (<NavigationBar />)}
             <h2 className="text-2xl text-center text-white font-bold mb-2">
-            A blockchain-based insurance protocol provider DApp By Adeola David A.
+            Seamless Account Abstraction with Adesdesk Wallets for ERC20 Tokens
             </h2>
             <div className="mt-5">
                 {!walletConnected && (
