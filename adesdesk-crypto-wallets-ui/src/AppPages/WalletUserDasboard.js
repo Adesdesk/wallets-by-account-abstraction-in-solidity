@@ -5,8 +5,7 @@ import WalletContract from '../contracts/WalletContract.json';
 import NavigationBar from '../components/NavigationBar/NavigationBar.js';
 
 const WalletUserDashboard = ({ wallet }) => {
-  // const walletContractAddress = '0x334641dc62D9a9B978E938d823496A33520dc5a7';
-  const walletContractDeployerAddress = '0xE81F4BBf78eD636999B2731326625A08d02AF04c';
+  const walletContractDeployerAddress = '0x669Eb17356a93538aEB47a1F48201aaA65f7EAAe';
 
   const [balance, setBalance] = useState(0);
   const [walletAddress, setWalletAddress] = useState('');
@@ -17,9 +16,9 @@ const WalletUserDashboard = ({ wallet }) => {
 
   async function loadWallet() {
     try {
-      const provider = new ethers.providers.Web3Provider(wallet);
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
-      
+
       // Create a new instance of the WalletContractDeployer
       const walletContractDeployer = new ethers.Contract(
         walletContractDeployerAddress,
@@ -27,11 +26,12 @@ const WalletUserDashboard = ({ wallet }) => {
         signer
       );
 
-      // Check if the user has a wallet
-      const userWalletAddress = await walletContractDeployer.wallets(signer.getAddress());
+      // Retrieve the user's wallet address using the getWalletAddress function in the WalletContractDeployer
+      const userWalletAddress = await walletContractDeployer.getWalletAddress(signer.getAddress());
+
       if (userWalletAddress !== ethers.constants.AddressZero) {
         setWalletAddress(userWalletAddress);
-        
+
         // Create a new instance of the WalletContract
         const walletContract = new ethers.Contract(
           userWalletAddress,
@@ -47,6 +47,7 @@ const WalletUserDashboard = ({ wallet }) => {
       console.error(error);
     }
   }
+
 
   async function createWallet() {
     try {
@@ -74,10 +75,12 @@ const WalletUserDashboard = ({ wallet }) => {
     <div>
       <NavigationBar />
       <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-violet-500 to-fuchsia-500">
-        <h2 className="text-2xl text-center text-white font-bold mb-2">
+      
+        <h2 className="text-2xl text-center text-black font-bold mb-2">
           Adesdesk Wallets User Dashboard
         </h2>
-        
+        <div className="max-w-lg px-4 py-2 rounded-lg shadow-lg">
+
         {walletAddress !== '' ? (
           <div>
             <h3 className="text-white text-lg font-bold mb-2">Wallet Address:</h3>
@@ -89,13 +92,14 @@ const WalletUserDashboard = ({ wallet }) => {
           <div>
             <p className="text-white mb-2">You don't have a wallet yet.</p>
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-violet-700 border-white text-white font-bold py-2 px-4 border-2 rounded"
               onClick={createWallet}
             >
               Create Wallet
             </button>
           </div>
         )}
+        </div>
       </div>
     </div>
   );

@@ -20,7 +20,7 @@ const WalletConnection = ({ onConnect }) => {
         }
     };
 
-    const handleNavigateToinsureWallet = () => {
+    const handleNavigateToWalletDashboard = () => {
         navigate('/wallet-user-dashboard');
     };
 
@@ -31,7 +31,7 @@ const WalletConnection = ({ onConnect }) => {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-violet-500 to-fuchsia-500">
             {walletConnected && (<NavigationBar />)}
-            <h2 className="text-2xl text-center text-white font-bold mb-2">
+            <h2 className="text-2xl text-center text-black font-bold mb-2">
             Seamless Account Abstraction with Adesdesk Wallets for ERC20 Tokens
             </h2>
             <div className="mt-5">
@@ -47,10 +47,10 @@ const WalletConnection = ({ onConnect }) => {
                     <div className='flex flex-col items-center justify-center'>
         
                         <button
-                            className="bg-yellow-400 hover:bg-yellow-300 text-white font-bold py-2 px-4 rounded mt-2"
-                            onClick={handleNavigateToinsureWallet}
+                            className="bg-violet-700 border-white text-white font-bold py-2 px-4 border-2 rounded"
+                            onClick={handleNavigateToWalletDashboard}
                         >
-                            Connected! Click here to subscribe to an insurance plan for your cryptocurrency wallet
+                            Connected! Click here to create or do more with your cryptocurrency wallet
                         </button>
 
                         {/* <button
