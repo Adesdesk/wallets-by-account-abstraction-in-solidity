@@ -6,10 +6,14 @@ Wallets-by-account-abstraction-in-solidity
 This project consists of 2 main solidity smart contracts. The WalletContract.sol implements a smart contract wallet for users using account abstraction, while the WalletContractDeployer.sol enables various users to create their unique wallet, and keeps track of each owner's corresponding wallets and token balances. The contract bundle, including its imported library - OpenZeppelin's IERC20 interface functions to enable wallet owners maintain, receive and send ERC20 standard compliant tokens. This version implements support for my custom test tokens named ADESCOIN. Users of this wallet get to seamlessly send, receive, and retain balances of the ADESCOIN tokens, while the same principle can be applied to other ERC20 standards compliant tokens.
 
 ## Getting Started
+* * Clone this repository to get an exact copy of this program on your computer by running the following command.
+
+```
+git clone https://github.com/Adesdesk/wallets-by-account-abstraction-in-solidity.git
+```
 
 ### Installing
-* Clone this repository to get an exact copy of this program on your computer.
-* Open the repository folder in your preferred command line interface. 
+* Open the repository folder (now in your device) using your preferred command line interface. 
 * Using the terminal in VSCode is a good option, since you will also need  to access the sub-folders and files in an IDE.
 * In the root directry of the smart contracts folder, create an additional document named exactly ".env" (quotes not inclusive), where you should add your evnvironment variables according to the variable names available in the hardhat.config.js file, or as you may choose to.
 * Back in the terminal, once in the project folder, navigate into the smart contracts application folder by running the following commands in the same order.
@@ -52,11 +56,11 @@ Name: Adeola David Adelakun
 
 Email: adesdesk@outlook.com
 
-
 ## License
 
 This project is licensed under the MIT License - see the LICENSE.md file for details
 
 ## Smart Contract addresses
 WalletContract deployed to: 0x040D5ee3125D0B4c066c5c9565801D1B62A81da2
+
 WalletContractDeployer deployed to: 0x87537680E0f6C972E6b05AAdF5b5902a072B0859
