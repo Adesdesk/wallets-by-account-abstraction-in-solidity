@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract WalletContract {
     address immutable owner;
+    event FundsReceived(address indexed owner, uint256 amount);
     mapping(address => uint256) public balances;
 
     modifier onlyOwner() {
@@ -23,17 +24,33 @@ contract WalletContract {
     }
 
     // Transfer funds from the contract to another wallet or token contract
-    function transfer(WalletContract to, address token, uint256 amount) external onlyOwner {
+    function transfer(WalletContract to, address token, uint256 amount) external {
         if (token == address(0)) {
             // If the token is ETH (address 0), transfer the specified amount of ETH
-            require(address(this).balance >= amount, "Insufficient balance");
+            require(balances[msg.sender] >= amount, "Insufficient balance");
+
+            balances[msg.sender] -= amount;
+            balances[address(to)] += amount;
+
             payable(address(to)).transfer(amount); // Transfer ETH to the specified wallet
         } else {
             // If the token is an ERC-20 token, transfer the specified amount of tokens
             IERC20 tokenContract = IERC20(token);
             require(tokenContract.balanceOf(address(this)) >= amount, "Insufficient balance");
+            
+            balances[msg.sender] -= amount;
+            balances[address(to)] += amount;
+
             require(tokenContract.transfer(address(to), amount), "Token transfer failed"); // Transfer tokens to the specified wallet
         }
     }
+
+    // enable owner receive funds and reflect such in their balance
+    receive() external payable {
+        balances[owner] += msg.value;
+        emit FundsReceived(owner, msg.value);
+    }
+
+
 }
 

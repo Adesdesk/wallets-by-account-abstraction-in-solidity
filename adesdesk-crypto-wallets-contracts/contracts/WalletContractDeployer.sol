@@ -28,9 +28,15 @@ contract WalletContractDeployer {
     }
 
     // Get the balance of the wallet
+    // function getBalance(address walletOwner) external view returns (uint256) {
+    //     return WalletContract(ownerToWallet[walletOwner]).getBalance(); // Retrieve the balance of the specified wallet using the WalletContract
+    // }
+
     function getBalance(address walletOwner) external view returns (uint256) {
-        return WalletContract(ownerToWallet[walletOwner]).getBalance(); // Retrieve the balance of the specified wallet using the WalletContract
-    }
+            WalletContract wallet = WalletContract(payable(ownerToWallet[walletOwner]));
+            return wallet.getBalance();
+        }
+
 
     // Get the owner of a wallet
     function getWalletOwner(address walletAddress) external view returns (address) {
@@ -47,8 +53,8 @@ contract WalletContractDeployer {
         require(wallets[from].owner != address(0), "Sender wallet does not exist");
         require(wallets[to].owner != address(0), "Receiver wallet does not exist");
 
-        WalletContract fromWallet = WalletContract(ownerToWallet[from]); // Get the WalletContract instance for the sender's wallet
-        WalletContract toWallet = WalletContract(ownerToWallet[to]); // Get the WalletContract instance for the receiver's wallet
+        WalletContract fromWallet = WalletContract(payable(ownerToWallet[from])); // Get the WalletContract instance for the sender's wallet
+        WalletContract toWallet = WalletContract(payable(ownerToWallet[to])); // Get the WalletContract instance for the receiver's wallet
 
         require(fromWallet.getBalance() >= amount, "Insufficient balance"); // Check if the sender's wallet has sufficient balance
 

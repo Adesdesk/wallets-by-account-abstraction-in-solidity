@@ -4,13 +4,15 @@ import WalletContractDeployer from '../contracts/WalletContractDeployer.json';
 import WalletContract from '../contracts/WalletContract.json';
 import NavigationBar from '../components/NavigationBar/NavigationBar.js';
 import PolygonMumbaiContract from '../contracts/PolygonMumbaiContract.json';
+import CustomTokenContractABI from '../contracts/CustomTokenContract.json';
 
 
 const WalletUserDashboard = ({ wallet }) => {
-  const walletContractDeployerAddress = '0x80764eC89F806C4DD8Fbf2fF58ba571ef761814D';
+  const walletContractDeployerAddress = '0x70E42bB88B3e1c90dDEDD565BE55c187f46394C2';
   const ethTokenAddress = ethers.constants.AddressZero;
+  const [customTokenBalance, setCustomTokenBalance] = useState('0');
   const maticTokenAddress = '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889'; // the actual address of Polygon Mumbai Matic token
-
+  const customTokenAddress = '0xd9145CCE52D386f254917e481eB44e9943F39138';
   const [ethBalance, setEthBalance] = useState('0');
   const [maticBalance, setMaticBalance] = useState('0');
   const [walletAddress, setWalletAddress] = useState('');
@@ -44,16 +46,30 @@ const WalletUserDashboard = ({ wallet }) => {
           signer
         );
 
+        // Create a new instance of the custom token contract
+        const customTokenContract = new ethers.Contract(
+          customTokenAddress,
+          CustomTokenContractABI,
+          signer
+        );
+
+        // Get the wallet custom token balance
+        const customTokenBalance = await customTokenContract.balanceOf(userWalletAddress);
+        setCustomTokenBalance(customTokenBalance.toString());
+
+
         // Get the wallet ETH balance
         const ethBalance = await walletContract.getBalance();
         setEthBalance(ethBalance.toString());
 
         // Create a new instance of the Matic token contract
-        const maticTokenContract = new ethers.Contract(maticTokenAddress, PolygonMumbaiContract.abi, signer);
+        const maticTokenContract = new ethers.Contract(maticTokenAddress, PolygonMumbaiContract, signer);
 
         // Get the wallet Matic balance
         const maticBalance = await maticTokenContract.balanceOf(userWalletAddress);
         setMaticBalance(maticBalance.toString());
+
+        
       }
     } catch (error) {
       console.error(error);
@@ -99,7 +115,10 @@ const WalletUserDashboard = ({ wallet }) => {
               <p className="text-white">{ethBalance} ETH</p>
               <h3 className="text-white text-lg font-bold mb-2">Matic Balance:</h3>
               <p className="text-white">{maticBalance} Matic</p>
+              <h3 className="text-white text-lg font-bold mb-2">ADESCOIN Balance:</h3>
+              <p className="text-white">{customTokenBalance} ADESCOIN</p>
             </div>
+            
           ) : (
             <div>
               <p className="text-white mb-2">You don't have a wallet yet.</p>
