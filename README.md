@@ -6,7 +6,7 @@ Wallets-by-account-abstraction-in-solidity
 This project consists of 2 main solidity smart contracts. The WalletContract.sol implements a smart contract wallet for users using account abstraction, while the WalletContractDeployer.sol enables various users to create their unique wallet, and keeps track of each owner's corresponding wallets and token balances. The contract bundle, including its imported library - OpenZeppelin's IERC20 interface functions to enable wallet owners maintain, receive and send ERC20 standard compliant tokens. This version implements support for my custom test tokens named ADESCOIN. Users of this wallet get to seamlessly send, receive, and retain balances of the ADESCOIN tokens, while the same principle can be applied to other ERC20 standards compliant tokens.
 
 ## Getting Started
-* * Clone this repository to get an exact copy of this program on your computer by running the following command.
+* Clone this repository to get an exact copy of this program on your computer by running the following command.
 
 ```
 git clone https://github.com/Adesdesk/wallets-by-account-abstraction-in-solidity.git
@@ -61,6 +61,6 @@ Email: adesdesk@outlook.com
 This project is licensed under the MIT License - see the LICENSE.md file for details
 
 ## Smart Contract addresses
-WalletContract deployed to: 0x040D5ee3125D0B4c066c5c9565801D1B62A81da2
+WalletContract deployed to: 0xC232C23F2fe17D0fC0eCc55bdEbB083a176e9316
 
-WalletContractDeployer deployed to: 0x87537680E0f6C972E6b05AAdF5b5902a072B0859
+WalletContractDeployer deployed to: 0xc28Df48d0d94291d3704B7fD77FAB55b96CA2aFd
