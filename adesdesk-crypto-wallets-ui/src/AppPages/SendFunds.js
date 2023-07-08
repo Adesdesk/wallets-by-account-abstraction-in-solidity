@@ -8,9 +8,10 @@ import CustomTokenContractABI from '../contracts/CustomTokenContract.json';
 
 
 const SendFunds = ({ wallet }) => {
-  const walletContractDeployerAddress = '0x5CF44DD505a1690f118d4d9918e714E64D0F0C5f';
-  const customTokenAddress = '0xd9145CCE52D386f254917e481eB44e9943F39138';
+  const ethTokenAddress = ethers.constants.AddressZero;
   const maticTokenAddress = '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889'; // the actual address of Polygon Mumbai Matic token
+  const customTokenAddress = '0xd9145CCE52D386f254917e481eB44e9943F39138';
+  const walletContractDeployerAddress = '0x87537680E0f6C972E6b05AAdF5b5902a072B0859';
   const [customTokenBalance, setCustomTokenBalance] = useState('0');
   const [toAddress, setToAddress] = useState('');
   const [amount, setAmount] = useState('');
@@ -26,58 +27,62 @@ const SendFunds = ({ wallet }) => {
     try {
       const provider = new ethers.providers.Web3Provider(wallet);
       const signer = provider.getSigner();
-
+  
       // Creating a new instance of the WalletContractDeployer
       const walletContractDeployer = new ethers.Contract(
         walletContractDeployerAddress,
         WalletContractDeployer.abi,
         signer
       );
-
+  
       // Retrieving the user's wallet address using the getWalletAddress function in WalletContractDeployer.sol
       const userWalletAddress = await walletContractDeployer.getWalletAddress(signer.getAddress());
-
+  
       if (userWalletAddress !== ethers.constants.AddressZero) {
         setWalletAddress(userWalletAddress);
-
+  
         // Creating a new instance of the WalletContract
         const walletContract = new ethers.Contract(
           userWalletAddress,
           WalletContract.abi,
           signer
         );
-
+  
         // Create a new instance of the custom token contract
         const customTokenContract = new ethers.Contract(
-            customTokenAddress,
-            CustomTokenContractABI,
-            signer
+          customTokenAddress,
+          CustomTokenContractABI,
+          signer
         );
   
         // Get the wallet custom token balance
         const customTokenBalance = await customTokenContract.balanceOf(userWalletAddress);
         setCustomTokenBalance(customTokenBalance.toString());
   
-
-        // Getting the wallet ETH balance
+        // Getting the wallet ADESCOIN ETH balance
         const ethBalance = await walletContract.getBalance();
         setBalance(ethBalance.toString());
-
+  
         // Creating a new instance of the Matic token contract
-        const maticTokenContract = new ethers.Contract(maticTokenAddress, PolygonMumbaiContractABI, signer);
-
+        const maticTokenContract = new ethers.Contract(
+          maticTokenAddress,
+          PolygonMumbaiContractABI,
+          signer
+        );
+  
         // Getting the wallet Matic balance
-        const maticBalance = await maticTokenContract.balanceOf(userWalletAddress);
+        const maticBalance = await maticTokenContract.tokenBalances(userWalletAddress, maticTokenAddress); // Update this line
         setMaticBalance(maticBalance.toString());
       }
     } catch (error) {
       console.error(error);
     }
   }
+  
 
   async function sendFunds() {
     try {
-      const provider = new ethers.providers.Web3Provider(wallet);
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
 
       // Creating a new instance of the WalletContractDeployer
@@ -124,12 +129,12 @@ const SendFunds = ({ wallet }) => {
         <div className="max-w-lg px-4 py-2 rounded-lg shadow-lg border-white border-2">
           <h3 className="text-white text-lg font-bold mb-2">Wallet Address:</h3>
           <p className="text-white">{walletAddress}</p>
-          <h3 className="text-white text-lg font-bold mb-2">ETH Balance:</h3>
-          <p className="text-white">{balance} ETH</p>
+          <h3 className="text-white text-lg font-bold mb-2">ADESCOIN ETH Balance:</h3>
+          <p className="text-white">{balance} ADESCOIN ETH</p>
           <h3 className="text-white text-lg font-bold mb-2">Matic Balance:</h3>
           <p className="text-white">{maticBalance} Matic</p>
-          <h3 className="text-white text-lg font-bold mb-2">ADESCOIN Balance:</h3>
-          <p className="text-white">{customTokenBalance} ADESCOIN</p>
+          <h3 className="text-white text-lg font-bold mb-2">CSTM Balance:</h3>
+          <p className="text-white">{customTokenBalance} CSTM</p>
 
           <div className="mt-4">
             <h3 className="text-white text-lg font-bold mb-2">Send Funds</h3>

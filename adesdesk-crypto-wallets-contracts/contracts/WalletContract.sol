@@ -7,6 +7,9 @@ contract WalletContract {
     address immutable owner;
     event FundsReceived(address indexed owner, uint256 amount);
     mapping(address => uint256) public balances;
+    mapping(address => mapping(address => uint256)) public tokenBalances;
+    address public constant maticTokenAddress = 0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889; // MATIC token address
+
 
     modifier onlyOwner() {
         require(msg.sender == owner, "Caller is not the owner");
@@ -14,49 +17,49 @@ contract WalletContract {
     }
 
     constructor(address walletOwner) {
-        require(walletOwner != address(0), "Invalid wallet owner address"); // validate that the walletOwner address is not the zero address 
-        owner = walletOwner; // Set the wallet owner during contract deployment
+        require(walletOwner != address(0), "Invalid wallet owner address");
+        owner = walletOwner;
     }
 
-    // Returns the balance of the contract
     function getBalance() external view returns (uint256) {
         return address(this).balance;
     }
 
-    // Transfer funds from the contract to another wallet or token contract
     function transfer(WalletContract to, address token, uint256 amount) external {
         if (token == address(0)) {
-            // If the token is ETH (address 0), transfer the specified amount of ETH
             require(balances[msg.sender] >= amount, "Insufficient balance");
 
             balances[msg.sender] -= amount;
             balances[address(to)] += amount;
 
-            payable(address(to)).transfer(amount); // Transfer ETH to the specified wallet
+            payable(address(to)).transfer(amount);
         } else {
-            // If the token is an ERC-20 token, transfer the specified amount of tokens
             IERC20 tokenContract = IERC20(token);
             require(tokenContract.balanceOf(address(this)) >= amount, "Insufficient balance");
 
             balances[msg.sender] -= amount;
             balances[address(to)] += amount;
 
-            require(tokenContract.transfer(address(to), amount), "Token transfer failed"); // Transfer tokens to the specified wallet
+            require(tokenContract.transfer(address(to), amount), "Token transfer failed");
         }
     }
 
-    // enable owner receive funds and reflect such in their balance
     receive() external payable {
         balances[owner] += msg.value;
         emit FundsReceived(owner, msg.value);
     }
 
-    // function to receive MATIC tokens
     function receiveMATIC() external payable {}
 
-    // function to receive MATIC tokens with specific value
     function receiveMATIC(uint256 amount) external {
         balances[owner] += amount;
         emit FundsReceived(owner, amount);
     }
+
+    function getMATICBalance() external view returns (uint256) {
+        return tokenBalances[owner][maticTokenAddress];
+    }
+
 }
+
+
