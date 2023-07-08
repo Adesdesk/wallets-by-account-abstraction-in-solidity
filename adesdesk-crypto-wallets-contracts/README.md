@@ -2,5 +2,5 @@
 Solidity smart contracts to enable the creation of a wallet for every user who wants to have their own wallet.
 
 
-WalletContract deployed to: 0x39941eBb02b0917f00b47F44adBa6f5aa29B2531
-WalletContractDeployer deployed to: 0x70E42bB88B3e1c90dDEDD565BE55c187f46394C2
+WalletContract deployed to: 0xB24FBA556295C537324994ad399295ea356AB7B2
+WalletContractDeployer deployed to: 0x5CF44DD505a1690f118d4d9918e714E64D0F0C5f

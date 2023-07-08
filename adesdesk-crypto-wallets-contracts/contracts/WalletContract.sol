@@ -37,7 +37,7 @@ contract WalletContract {
             // If the token is an ERC-20 token, transfer the specified amount of tokens
             IERC20 tokenContract = IERC20(token);
             require(tokenContract.balanceOf(address(this)) >= amount, "Insufficient balance");
-            
+
             balances[msg.sender] -= amount;
             balances[address(to)] += amount;
 
@@ -51,6 +51,12 @@ contract WalletContract {
         emit FundsReceived(owner, msg.value);
     }
 
+    // function to receive MATIC tokens
+    function receiveMATIC() external payable {}
 
+    // function to receive MATIC tokens with specific value
+    function receiveMATIC(uint256 amount) external {
+        balances[owner] += amount;
+        emit FundsReceived(owner, amount);
+    }
 }
-

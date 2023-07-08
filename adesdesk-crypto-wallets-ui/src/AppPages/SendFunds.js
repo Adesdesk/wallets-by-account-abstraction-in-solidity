@@ -8,7 +8,7 @@ import CustomTokenContractABI from '../contracts/CustomTokenContract.json';
 
 
 const SendFunds = ({ wallet }) => {
-  const walletContractDeployerAddress = '0x80764eC89F806C4DD8Fbf2fF58ba571ef761814D';
+  const walletContractDeployerAddress = '0x5CF44DD505a1690f118d4d9918e714E64D0F0C5f';
   const customTokenAddress = '0xd9145CCE52D386f254917e481eB44e9943F39138';
   const maticTokenAddress = '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889'; // the actual address of Polygon Mumbai Matic token
   const [customTokenBalance, setCustomTokenBalance] = useState('0');
