@@ -14,20 +14,7 @@ git clone https://github.com/Adesdesk/wallets-by-account-abstraction-in-solidity
 
 ### Installing
 * Open the repository folder (now in your device) using your preferred command line interface. 
-* Using the terminal in VSCode is a good option, since you will also need  to access the sub-folders and files in an IDE.
-* In the root directry of the smart contracts folder, create an additional document named exactly ".env" (quotes not inclusive), where you should add your evnvironment variables according to the variable names available in the hardhat.config.js file, or as you may choose to.
-* Back in the terminal, once in the project folder, navigate into the smart contracts application folder by running the following commands in the same order.
-
-```
-cd adesdesk-crypto-wallets-contracts
-npm install
-npx hardhat run scripts/deploy.js --network mumbai
-```
-
-* Take note of the contract addresses printed out to the console on successful deployment and grab the address of WalletsContractDeployer.sol for use in the frontend component. 
-* Replace the address assigned to "const walletContractDeployerAddress" in the files name "SendFunds.js" and "WalletUserDashboard.js" available at the file path "adesdesk-crypto-wallets-ui/src/AppPages/".
-
-* Open a split terminal and in the second split, navigate into the frontend application folder by running the command.
+* Navigate into the frontend application folder by running the command.
 
 ```
 cd adesdesk-crypto-wallets-ui
